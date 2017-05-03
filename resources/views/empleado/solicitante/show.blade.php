@@ -90,8 +90,8 @@
               <td>{{$persona->departamento}}</td>
               <td>{{$persona->municipio}}</td>
               <td>{{$empleado->estadocivil}}</td>
-              <td>{{$empleado->afiliado}}</td>
-              <td>{{$empleado->puesto}}</td>
+              <td>{{$persona->afiliado}}</td>
+              <td>{{$persona->puesto}}</td>
               <td>{{$empleado->afiliacionigss}}</td>
 
               <td>{{$empleado->numerodependientes}}</td>

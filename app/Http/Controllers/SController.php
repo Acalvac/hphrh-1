@@ -35,9 +35,13 @@ class SController extends Controller
         ->join('municipio as m','p.idmunicipio','=','m.idmunicipio')
         ->join('departamento as dp','m.iddepartamento','=','dp.iddepartamento')
         ->join('empleado as em','p.identificacion','=','em.identificacion')
-        ->select('p.nombre1','p.nombre2','p.nombre3','p.apellido1','p.apellido2','p.apellido3','p.telefono','p.celular','p.avenida','p.calle','p.nomenclatura','p.zona','p.barriocolonia','dp.nombre as departamento','m.nombre as municipio','p.fechanac')
+        ->join('afiliado as a','p.idafiliado','=','a.idafiliado')
+        ->join('puesto as pu','p.idpuesto','=','pu.idpuesto')
+        ->select('p.nombre1','p.nombre2','p.nombre3','p.apellido1','p.apellido2','p.apellido3','p.telefono','p.celular','p.fechanac','p.avenida','p.calle','p.nomenclatura','p.zona','p.barriocolonia','dp.nombre as departamento','m.nombre as municipio','a.nombre as afiliado','pu.nombre as puesto')
         ->where('em.identificacion','=',$id)
         ->first();
+
+
 
         $fedad = new DateTime($persona->fechanac);
         
@@ -49,16 +53,18 @@ class SController extends Controller
 
         $empleado=DB::table('empleado as e')
         ->join('estadocivil as ec','e.idcivil','=','ec.idcivil')
-        ->join('afiliado as a','e.idafiliado','=','a.idafiliado')
-        ->join('puesto as p','e.idpuesto','=','p.idpuesto')
-        ->select('e.identificacion','e.afiliacionigss','e.numerodependientes','e.aportemensual','e.vivienda','e.alquilermensual','e.otrosingresos','e.pretension','e.nit','e.fechasolicitud','ec.estado as estadocivil','a.nombre as afiliado','p.nombre as puesto')
+        
+        
+        ->select('e.identificacion','e.afiliacionigss','e.numerodependientes','e.aportemensual','e.vivienda','e.alquilermensual','e.otrosingresos','e.pretension','e.nit','e.fechasolicitud','ec.estado as estadocivil')
         ->where('e.identificacion','=',$id)
         ->first();
 
         $academicos=DB::table('personaacademico as pc')
         ->join('persona as p','pc.identificacion','=','p.identificacion')
-        ->select('pc.titulo','pc.establecimiento','pc.duracion','pc.nivel','pc.fingreso','pc.fsalida')
+        ->join('nivelacademico as na','pc.idnivel','=','na.idnivel')
+        ->select('pc.titulo','pc.establecimiento','pc.duracion','na.nombrena as nivel','pc.fingreso','pc.fsalida')
         ->where('pc.identificacion','=',$id)
+
         ->get();
 
         $experiencias=DB::table('personaexperiencia as pe')
@@ -118,7 +124,7 @@ class SController extends Controller
             $empleados=DB::table('empleado as e')
             ->join('persona as p','e.identificacion','=','p.identificacion')
             ->join('estadocivil as ec','e.idcivil','=','ec.idcivil')
-            ->join('puesto as pu','e.idpuesto','=','pu.idpuesto')
+            ->join('puesto as pu','p.idpuesto','=','pu.idpuesto')
             ->join('status as s','e.idstatus','=','s.idstatus')
             ->select('e.idempleado','e.identificacion','e.nit','p.nombre1','p.nombre2','p.nombre3','p.apellido1','p.apellido2','ec.estado as estadocivil','s.statusemp as status','pu.nombre as puesto')
             ->where('p.nombre1','LIKE','%'.$query.'%')
@@ -138,21 +144,22 @@ class SController extends Controller
         ->join('municipio as m','p.idmunicipio','=','m.idmunicipio')
         ->join('departamento as dp','m.iddepartamento','=','dp.iddepartamento')
         ->join('empleado as em','p.identificacion','=','em.identificacion')
-        ->select('p.nombre1','p.nombre2','p.nombre3','p.apellido1','p.apellido2','p.apellido3','p.telefono','p.fechanac','p.avenida','p.calle','p.nomenclatura','p.zona','p.barriocolonia','dp.nombre as departamento','m.nombre as municipio')
+        ->join('afiliado as a','p.idafiliado','=','a.idafiliado')
+        ->join('puesto as pu','p.idpuesto','=','pu.idpuesto')
+        ->select('p.nombre1','p.nombre2','p.nombre3','p.apellido1','p.apellido2','p.apellido3','p.telefono','p.fechanac','p.avenida','p.calle','p.nomenclatura','p.zona','p.barriocolonia','dp.nombre as departamento','m.nombre as municipio','a.nombre as afiliado','pu.nombre as puesto')
         ->where('em.identificacion','=',$id)
         ->first();
 
         $empleado=DB::table('empleado as e')
         ->join('estadocivil as ec','e.idcivil','=','ec.idcivil')
-        ->join('afiliado as a','e.idafiliado','=','a.idafiliado')
-        ->join('puesto as p','e.idpuesto','=','p.idpuesto')
-        ->select('e.identificacion','e.afiliacionigss','e.numerodependientes','e.aportemensual','e.vivienda','e.alquilermensual','e.otrosingresos','e.pretension','e.nit','e.fechasolicitud','ec.estado as estadocivil','a.nombre as afiliado','p.nombre as puesto')
+        ->select('e.identificacion','e.afiliacionigss','e.numerodependientes','e.aportemensual','e.vivienda','e.alquilermensual','e.otrosingresos','e.pretension','e.nit','e.fechasolicitud','ec.estado as estadocivil')
         ->where('e.identificacion','=',$id)
         ->first();
 
         $academicos=DB::table('personaacademico as pc')
         ->join('persona as p','pc.identificacion','=','p.identificacion')
-        ->select('pc.titulo','pc.establecimiento','pc.duracion','pc.nivel','pc.fingreso','pc.fsalida')
+        ->join('nivelacademico as na','pc.idnivel','=','na.idnivel')
+        ->select('pc.titulo','pc.establecimiento','pc.duracion','na.nombrena as nivel','pc.fingreso','pc.fsalida')
         ->where('pc.identificacion','=',$id)
         ->get();
 

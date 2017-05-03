@@ -264,6 +264,7 @@
 
                     if(data.valid !== undefined){
                         $("#result").html("En hora buena formulario enviado correctamente");
+                        
                         $("#form")[0].reset();
                         $("#error_fechaini").html('');
                         $("#error_fechafin").html('');

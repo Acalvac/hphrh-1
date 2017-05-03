@@ -31,8 +31,10 @@ Route::group(['prefix'=>'empleado'],function(){
 	Route::post('/updatefoto','UController@subirimagen');
 	Route::get('galeria','UController@galeria');
 	Route::get('listaracademico','UController@listaracademico');
-	Route::get('createacademico','UController@academicocreate');
 	Route::get('towns/{id}', 'UController@getTowns'); 
+	Route::post('agregaracademico','UController@agregaracademico');
+	Route::get('listarfamilia','UController@listarfamiliar');
+	Route::post('agregarfamiliar','UController@agregarfamiliar');
 
 //FotoController@agregarimagen
 	//Route::put('/colaboradores/{id}',['uses' => 'Colaboradores@update', 'middleware' => 'auth']);

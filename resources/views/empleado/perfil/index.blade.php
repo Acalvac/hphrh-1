@@ -1,9 +1,9 @@
 @extends ('layouts.index')
 @section('estilos')
     @parent
-<link href="{{asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')}}" rel="stylesheet" />
+        <link href="{{asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css')}}" rel="stylesheet" />
         <link href="{{asset('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.css')}}" rel="stylesheet" />
-        @endsection
+@endsection
 @section ('contenido')
 
 <div class="row"> 
@@ -106,7 +106,7 @@
                     </li>
                     <li class=""> <a href="javascript:void(0);" onclick="cargarlistado(1,1);">
                     
-                    <a href="#profile" data-toggle="tab" aria-expanded="false" >
+                        <a href="#profile" data-toggle="tab" aria-expanded="false" >
                             <span class="visible-xs"><i class="fa fa-photo"></i></span>
                             <span class="hidden-xs">GALLERY</span>
                         </a>
@@ -118,23 +118,25 @@
                         </a>
                     </li>
 
-                    <li class="" <a href="javascript:void(0);" onclick="cargaracademico(1,1);">
+                    <li class=""> <a href="javascript:void(0);" onclick="cargaracademico(1,1);">
                     
                         <a href="#academicos" data-toggle="tab" aria-expanded="false">
                             <span class="visible-xs"><i class="fa fa-cog"></i></span>
                             <span class="hidden-xs">Academico</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="#personal" data-toggle="tab" aria-expanded="false">
+                   
+                    <li class=""> <a href="javascript:void(0);" onclick="cargarfamilia(1,1);">
+
+                        <a href="#familiares" data-toggle="tab" aria-expanded="false">
                             <span class="visible-xs"><i class="fa fa-cog"></i></span>
-                            <span class="hidden-xs">Personal</span>
+                            <span class="hidden-xs">Familia</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="#familiar" data-toggle="tab" aria-expanded="false">
+                    <a href="#" data-toggle="tab" aria-expanded="false">
                             <span class="visible-xs"><i class="fa fa-cog"></i></span>
-                            <span class="hidden-xs">Familiar</span>
+                            <span class="hidden-xs">acor</span>
                         </a>
                     </li>
                 </ul>
@@ -200,9 +202,11 @@
                             <button class="btn btn-primary waves-effect waves-light w-md" type="submit">Save</button>
                         </form>
                     </div>
-
                     @include('hr.academico')
-                    <div class="tab-pane" ></div>
+                    @include('hr.familia')
+
+                 
+
                 </div>
             </div>
         </div>
@@ -215,11 +219,14 @@
     <meta name="_token" content="{!! csrf_token() !!}" />
     <script src="{{asset('assets/js/foto.js')}}"></script>
     <script src="{{asset('assets/js/academico.js')}}"></script>
+    <script src="{{asset('assets/js/familia.js')}}"></script>
     <script src="{{asset('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.js')}}"></script>
     <script src="{{asset('assets/plugins/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js')}}"></script>
     
-    <script>cargarlistado(1);</script>
-    <script>cargaracademico(1);</script>
+    <script>cargarlistado(1);   </script>
+    <script>cargaracademico(1); </script>
+    <script>cargarfamilia(1);   </script>
     
+
 
 @endsection

@@ -19,7 +19,7 @@ $('html, body').animate({scrollTop:0}, 300);
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });            
-       
+        
         $.ajax({
             url: miurl,
             type: 'POST',

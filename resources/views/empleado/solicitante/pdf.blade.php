@@ -20,8 +20,8 @@
           					</div>
           					<div class="col-md-10 col-md-12 col-sm-12 col-xs-12">
             					<h2 class="text-center">SOLICITUD DE EMPLEO</h2>
-            					<h4 class="text-center">Afiliado: {{$empleado->afiliado}}</h4>
-            					<h4 class="text-center">Puesto aplicar: {{$empleado->puesto}}</h4>
+            					<h4 class="text-center">Afiliado: {{$persona->afiliado}}</h4>
+            					<h4 class="text-center">Puesto aplicar: {{$persona->puesto}}</h4>
             				</div>
           				</div>
         			</div>
