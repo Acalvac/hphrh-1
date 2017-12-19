@@ -162,7 +162,9 @@ class JIViajeController extends Controller
                 ->join('empleado as emp','gve.idempleado','=','emp.idempleado')
                 ->join('persona as per','emp.identificacion','=','per.identificacion')
                 ->join('plancuentas as pcu','gve.codigocuenta','pcu.codigocuenta')
-                ->select('per.nombre1','per.nombre2','per.nombre3','per.apellido1','per.apellido2','per.apellido3','gve.factura','gve.fechafactura as fecha','gve.montofactura as monto','gve.descripcion','pcu.nombrecuenta as cuenta','pro.nombreproyecto as proyecto','gve.idgastoempleado','check1','check2')
+                ->join('codigointerno as eve','gve.idevento','=','eve.idcodigoi')   // evento.
+                ->join('codigointerno as don','gve.iddonante','=','don.idcodigoi')  // donante.
+                ->select('per.nombre1','per.nombre2','per.nombre3','per.apellido1','per.apellido2','per.apellido3','gve.factura','gve.fechafactura as fecha','gve.montofactura as monto','gve.descripcion','pcu.nombrecuenta as cuenta','pro.nombreproyecto as proyecto','gve.idgastoempleado','check1','check2','eve.nombre as evento','don.nombre as donante')
                 ->where('gvi.idgastocabeza','=',$proyecto->idgastocabeza)
                 ->get();
 

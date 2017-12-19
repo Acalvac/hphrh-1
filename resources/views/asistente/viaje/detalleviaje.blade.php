@@ -108,6 +108,8 @@
                                 <th style="width: 10%"># Factura</th>
                                 <th style="width: 13%">Empleado</th>
                                 <th style="width: 13%">Cuenta</th>
+                                <th>Eventos</th>
+                                <th style="width: 8%">Línea de presupuesto</th>
                                 <th style="width: 11%">Proyecto L9</th>
                                 <th style="width: 8%">Funci&oacute;n L2</th>
                                 <th style="width: 6%">Monto</th>
@@ -125,6 +127,8 @@
                                 <td>{{$gvi->factura}}</td>
                                 <td>{{$gvi->nombre1.' '.$gvi->nombre2.' '.$gvi->nombre3.' '.$gvi->apellido1.' '.$gvi->apellido2.' '.$gvi->apellido3}}</td>
                                 <td>{{$gvi->cuenta}}</td>
+                                <td>{{$gvi->evento}}</td>
+                                <td>{{$gvi->donante}}</td>
                                 <td>{{$gvi->proyecto}}</td>
                                 <td>10</td>
                                 <td>{{$gvi->monto}}</td>
@@ -239,8 +243,11 @@
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
             }
         });
+        var ids = $("#idgastocabeza").val();
+        console.log(ids);
         var id=$(this).val();
-        var miurl = urlraiz+"/asistete/viaje/liquidar/add/"+id;
+        console.log(id);
+        var miurl = urlraiz+"/asistete/viaje/liquidar/add/"+id+"/"+ids;
         $.get(miurl,function(data){
             $("#modaliq").html(data);
             $('#inputTitleLiquidar').html("Agregar registro liquidación");

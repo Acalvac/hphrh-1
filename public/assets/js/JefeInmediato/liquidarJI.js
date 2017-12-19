@@ -65,9 +65,9 @@
 					null, //#Factura
 					null, //Empleado
 					null, //Cuenta,
-					//null, //Cliente
+					null, //Cliente
 					null, //Evento
-					// null, //LOB L10
+					null, //LOB L10
 					null, //Donador L8
 					null, //Proyecto L9
 					null, //Funcion L2
@@ -154,6 +154,8 @@
                     cuenta: $("#cuenta").val(),
                     proyecto: $("#proyecto").val(),
                     gastoviaje: $("#idgastoviaje").val(),
+                    eventos: $("#evento").val(),
+                    linea_presupuesto: $("#donador").val(),
                 };
 
                 if (state == "update") 
@@ -253,7 +255,7 @@
 											$data.descripcion,
 											$data.factura,
 											n1+" "+n2+" "+n3+" "+a1+" "+a2+" "+a3,
-											$data.cuenta,
+											$data.cuenta,$data.evento,$data.donante,
 											$data.proyecto,'',
 											$data.monto,
 											check1,
@@ -302,9 +304,9 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
-
+            alert(id);
             var urlraiz=$("#url_raiz_proyecto").val();
-			var miurl = urlraiz+"/empleado/viaje/liquidar/edit/"+id;
+			var miurl = urlraiz+"/asistete/viaje/edit/"+id;
 			$('#idgastoemp').val(id);
 
 			$.get(miurl,function(data){
@@ -364,7 +366,7 @@
 							$data.descripcion,
 							$data.factura,
 							n1+" "+n2+" "+n3+" "+a1+" "+a2+" "+a3,
-							$data.cuenta,
+							$data.cuenta,$data.evento,$data.donante,
 							$data.proyecto,'',
 							$data.monto,
 							check1,

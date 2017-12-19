@@ -489,11 +489,12 @@ Route::group(['prefix'=>'asistete'],function()
 		Route::get('viaje/detallesliq/{id}','AsistenteC@detalleautoas');
 		Route::put('viaje/revision','AsistenteC@revision');
 		Route::put('viaje/revision2','AsistenteC@revision2');
-		Route::get('viaje/liquidar/add/{id}','AsistenteC@addl');
+		Route::get('viaje/liquidar/add/{id}/{ids?}','AsistenteC@addl');
 		Route::put('viaje/revisado','AsistenteC@revisado');
 		Route::put('viaje/tramite','AsistenteC@tramite');
 		Route::delete('viaje/delete/{id}','AsistenteC@elimina');
 		Route::get('viaje/updatemonto/{id}','AsistenteC@updateml');
+		Route::get('viaje/edit/{id}','AsistenteC@editl');
 
 });
 

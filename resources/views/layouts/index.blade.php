@@ -151,13 +151,12 @@
                                 </a> 
                             </li>
                             
-                            <!--
                             <li>
                                 <a href="{{url('/empleado/viaje')}}" class="waves-effect waves-primary">&nbsp;&nbsp;
                                 <i class="md md-airplanemode-on"></i><span>Movilizaci&oacute;n</span>
                                 </a> 
                             </li>
-                            -->
+                            
                           
 
                         <!-- // Gestiones___ // -->
@@ -184,13 +183,13 @@
                                     <i class="fa fa-file-text"></i><span>Solicitar puesto</span>
                                 </a>
                             </li>
-                        <!--
+                        
                             <li class="has_sub">
                                 <a href="{{ url('/ji/viajejf')}}" class="waves-effect waves-primary" onclick="cargarvacante(1);">&nbsp;&nbsp;&nbsp;
                                     <i class="md md-local-library"></i><span>Liquidaci&oacute;n</span>
                                 </a>
                             </li>
- -->
+ 
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect waves-primary">&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-folder-open"></i> <span>Reportes</span>
                                      <span class="menu-arrow"></span>
@@ -201,7 +200,7 @@
                             </li>
                         
                             @endrole
-<!-- 
+
                             @role('asistente') 
                                 <li class="menu-title"><strong>Movilización</strong></li>
                                 <li>
@@ -210,7 +209,7 @@
                                 <li><a href="{{ url('/asistete/viaje')}}" class="waves-effect waves-primary">&nbsp;&nbsp;<i class="md md-insert-emoticon"></i><span>Avances</span></a></li>
                             @endrole
  
--->
+
                         <!-- // Recurso Humano___ // -->
 
 

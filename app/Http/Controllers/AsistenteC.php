@@ -46,6 +46,7 @@ class AsistenteC extends Controller
     }
     public function detalleautoas($id)
     {
+        //dd($id);
         $proyecto = DB::table('gastoencabezado as gen','gen.idproyecto','gen.idempleado')
             ->join('proyecto as pca','gen.idproyecto','=','pca.idproyecto')
             ->join('gastoviaje as gvi','gen.idgastocabeza','=','gvi.idgastocabeza')
@@ -76,7 +77,9 @@ class AsistenteC extends Controller
                 ->join('empleado as emp','gve.idempleado','=','emp.idempleado')
                 ->join('persona as per','emp.identificacion','=','per.identificacion')
                 ->join('plancuentas as pcu','gve.codigocuenta','pcu.codigocuenta')
-                ->select('per.nombre1','per.nombre2','per.nombre3','per.apellido1','per.apellido2','per.apellido3','gve.factura','gve.fechafactura as fecha','gve.montofactura as monto','gve.descripcion','pcu.nombrecuenta as cuenta','pro.nombreproyecto as proyecto','gve.idgastoempleado','check1','check2')
+                ->join('codigointerno as eve','gve.idevento','=','eve.idcodigoi')   // evento.
+                ->join('codigointerno as don','gve.iddonante','=','don.idcodigoi')  // donante.
+                ->select('per.nombre1','per.nombre2','per.nombre3','per.apellido1','per.apellido2','per.apellido3','gve.factura','gve.fechafactura as fecha','gve.montofactura as monto','gve.descripcion','pcu.nombrecuenta as cuenta','pro.nombreproyecto as proyecto','gve.idgastoempleado','check1','check2','eve.nombre as evento','don.nombre as donante')
                 ->where('gvi.idgastocabeza','=',$proyecto->idgastocabeza)
                 ->get();
 
@@ -128,16 +131,30 @@ class AsistenteC extends Controller
         $gve-> save();
         return response()->json($gve);
     }
-    public function addl($id){
+    public function addl($id,$ids){
         $proyecto = DB::table('gastoencabezado as gen','gen.idproyecto','gen.idempleado')
             ->join('proyecto as pca','gen.idproyecto','=','pca.idproyecto')
             ->join('gastoviaje as gvi','gen.idgastocabeza','=','gvi.idgastocabeza')
             ->join('viaje as via','gvi.idviaje','=','via.idviaje')
             //->where('gen.idtipogasto','=',2)
+            //->where('gen.statusgasto','=','Autorizado')
+            ->where('gen.idgastocabeza','=',$ids)
             ->where('gen.idempleado','=',$id)
             ->select('gen.idgastocabeza','gen.fechasolicitud','gen.montosolicitado as monto','gen.chequetransfe','gen.moneda','gen.periodo','gen.idproyecto','pca.nombreproyecto','via.fechainicio','via.fechafin','gen.idempleado','gen.idgastocabeza','gvi.idgastoviaje')
             ->orderby('gen.idgastocabeza','desc')
             ->first();
+
+        $eventos = DB::table('codigoraiz as cra')
+            ->join('codigointerno as cin','cra.idele','=','cin.idele')
+            ->select('cin.idcodigoi as codigo','cin.nombre')
+            ->where('cin.idele','=',6)
+            ->get();
+
+        $donantes = DB::table('codigoraiz as cra')
+            ->join('codigointerno as cin','cra.idele','=','cin.idele')
+            ->select('cin.idcodigoi as codigo','cin.nombre')
+            ->where('cin.idele','=',8)
+            ->get();
 
         $gastoviajeemp = DB::table('gastoviajeempleado as gve')
             ->join('proyecto as pro','gve.idproyecto','=','pro.idproyecto')
@@ -173,7 +190,7 @@ class AsistenteC extends Controller
             ->select('c.codigocuenta','c.nombrecuenta')
             ->get();
 
-        return view ('empleado.viajeliquidacion.create',["proyecto"=>$proyecto,"empleado"=>$empleado,"cuenta"=>$cuenta,"gencabezado"=>$genc,"proyectos"=>$proyectos,"gastoviajeemp"=>$gastoviajeemp]);        
+        return view ('empleado.viajeliquidacion.create',["proyecto"=>$proyecto,"empleado"=>$empleado,"cuenta"=>$cuenta,"gencabezado"=>$genc,"proyectos"=>$proyectos,"gastoviajeemp"=>$gastoviajeemp,"eventos"=>$eventos,"donantes"=>$donantes]);        
     }
     public function elimina($id)
     {
@@ -195,7 +212,7 @@ class AsistenteC extends Controller
             ->join('proyecto as pca','gen.idproyecto','=','pca.idproyecto')
             ->join('gastoviaje as gvi','gen.idgastocabeza','=','gvi.idgastocabeza')
             ->join('viaje as via','gvi.idviaje','=','via.idviaje')
-            ->where('gen.statusgasto','=','Autorizado')
+            //->where('gen.statusgasto','=','Autorizado')
             //->where('gen.statusgasto','=','Revisado')
             ->where('gen.idempleado','=',$id)
             ->select('gen.idgastocabeza','gen.fechasolicitud','gen.statusgasto','gen.montosolicitado as monto','gen.chequetransfe','gen.moneda','gen.periodo','gen.idproyecto','pca.nombreproyecto','via.fechainicio','via.fechafin','gen.idempleado','gen.idgastocabeza','gvi.idgastoviaje','via.idviaje')
@@ -216,5 +233,78 @@ class AsistenteC extends Controller
         
         //}
         return response()->json($calculo);
+    }
+
+    public function editl(Request $request,$id){
+        $gastoempleado = DB::table('gastoviajeempleado as gvi')
+            ->join('proyecto as pca','gvi.idproyecto','=','pca.idproyecto')
+            ->join('plancuentas as pcu','gvi.codigocuenta','=','pcu.codigocuenta')
+            ->join('empleado as emp','gvi.idempleado','=','emp.idempleado')
+            ->join('persona as per','emp.identificacion','=','per.identificacion')
+            ->join('codigointerno as eve','gvi.idevento','=','eve.idcodigoi')   // evento.
+            ->join('codigointerno as don','gvi.iddonante','=','don.idcodigoi')  // donante.
+            ->select('gvi.idgastoempleado','emp.idempleado','per.nombre1','per.nombre2','per.nombre3','per.apellido1','per.apellido2','per.apellido3',
+                    'gvi.factura','gvi.fechafactura','gvi.montofactura','gvi.descripcion','pcu.codigocuenta','pcu.nombrecuenta as cuenta',
+                    'pca.idproyecto','pca.nombreproyecto as proyecto','eve.idcodigoi as evento','don.idcodigoi as donante')
+            ->where('gvi.idgastoempleado','=',$id)
+            ->first();
+
+        $proyecto = DB::table('gastoencabezado as gen','gen.idproyecto','gen.idempleado')
+            ->join('proyecto as pca','gen.idproyecto','=','pca.idproyecto')
+            ->join('gastoviaje as gvi','gen.idgastocabeza','=','gvi.idgastocabeza')
+            ->join('viaje as via','gvi.idviaje','=','via.idviaje')
+            //->where('gen.statusgasto','=','Autorizado')
+            //->where('gen.statusgasto','=','solicitado')
+            //->where('gen.idtipogasto','=',2)
+            //->where('gen.idempleado','=',$this->empleado()->idempleado)
+            ->select('gen.idgastocabeza','gen.fechasolicitud','gen.montosolicitado as monto','gen.chequetransfe','gen.moneda','gen.periodo','gen.idproyecto','pca.nombreproyecto','via.fechainicio','via.fechafin','gen.idempleado','gen.idgastocabeza','gvi.idgastoviaje')
+            ->orderby('gen.idgastocabeza','desc')
+            ->first();
+
+        $eventos = DB::table('codigoraiz as cra')
+            ->join('codigointerno as cin','cra.idele','=','cin.idele')
+            ->select('cin.idcodigoi as codigo','cin.nombre')
+            ->where('cin.idele','=',6)
+            ->get();
+
+        $donantes = DB::table('codigoraiz as cra')
+            ->join('codigointerno as cin','cra.idele','=','cin.idele')
+            ->select('cin.idcodigoi as codigo','cin.nombre')
+            ->where('cin.idele','=',8)
+            ->get();
+
+        $gastoviajeemp = DB::table('gastoviajeempleado as gve')
+            ->join('proyecto as pro','gve.idproyecto','=','pro.idproyecto')
+            ->join('gastoviaje as gvi','gve.idgastoviaje','=','gvi.idgastoviaje')
+            ->join('empleado as emp','gve.idempleado','=','emp.idempleado')
+            ->join('persona as per','emp.identificacion','=','per.identificacion')
+            ->join('plancuentas as pcu','gve.codigocuenta','pcu.codigocuenta')
+            ->select('per.nombre1','per.nombre2','per.nombre3','gve.factura','gve.fechafactura as fecha','gve.montofactura as monto','gve.descripcion','pcu.nombrecuenta as cuenta','pro.nombreproyecto as proyecto','gve.idgastoempleado')
+            ->where('gvi.idgastocabeza','=',$proyecto->idgastocabeza)
+            ->get();
+
+        $proyectos = DB::table('proyecto as pca')
+            ->select('pca.idproyecto','pca.nombreproyecto')
+            ->get();
+
+        $nomy = DB::table('nomytras as ntr')
+            ->select('ntr.idpuesto','ntr.idempleado','ntr.idafiliado')
+            ->where('ntr.idempleado','=',$proyecto->idempleado)
+            ->where('ntr.idcaso','=',6)
+            ->orwhere('ntr.idempleado','=',$proyecto->idempleado)
+            ->where('ntr.idcaso','=',4)
+            ->orwhere('ntr.idempleado','=',$proyecto->idempleado)
+            ->where('ntr.idcaso','=',7)
+            ->orderby('ntr.idnomytas','desc')
+            ->first();
+
+        $empleado = new Persona();
+        $empleado = $empleado->selectQuery(Constants::AFILIADO_EMPLEADO,array('idafiliado'=>$nomy->idafiliado));
+
+        $cuenta = DB::table('plancuentas as c')
+            ->select('c.codigocuenta','c.nombrecuenta')
+            ->get();
+
+        return view ('empleado.viajeliquidacion.edit',["empleado"=>$empleado,"cuenta"=>$cuenta,"gastoempleado"=>$gastoempleado,"proyectos"=>$proyectos,"gastoviajeemp"=>$gastoviajeemp,"eventos"=>$eventos,"donantes"=>$donantes]);
     }
 }
