@@ -112,7 +112,6 @@ class RHNombramientoEmpleado extends Controller
     {
         $puestos=Puesto::all();
 
-
         $empleado=DB::table('empleado as e')
         ->join('persona as p','e.identificacion','=','p.identificacion')
         ->select('e.idempleado','p.nombre1','p.apellido1','p.nombre2','p.apellido2','p.idpuesto','p.idafiliado')
@@ -125,7 +124,6 @@ class RHNombramientoEmpleado extends Controller
         ->select('c.idcaso','c.nombre')
         ->where('c.idcaso','=',6)
         ->get();
-
 
         $jefesinmediato=DB::table('persona as per')
         ->join('empleado as em','per.identificacion','=','em.identificacion')
@@ -192,12 +190,6 @@ class RHNombramientoEmpleado extends Controller
 
     public function addasecenso(Nomrequest $request)
     {
-
-
-        //$miArray1 = $_POST["items"];
-
-        
-       
         try 
         {
             
@@ -226,18 +218,6 @@ class RHNombramientoEmpleado extends Controller
             $empleado->idstatus = 2;
             $empleado->save();
 
-            /*
-
-            $per=DB::table('empleado as e')
-            ->join('persona as p','e.identificacion','=','p.identificacion')
-            ->select('p.identificacion')
-            ->where('e.idempleado','=',$idem)
-            ->first();
-
-            $persona = Persona::find($per->identificacion);
-            $persona-> idpuesto= $request->get('idpuesto');
-            $persona-> idafiliado = $request->get('idafiliado');
-            $persona->update();*/
             $mjf = $request->get('mjf');
             if($mjf == 0)
             {
@@ -264,14 +244,7 @@ class RHNombramientoEmpleado extends Controller
                     $asignajefe->notifica = $notifica;
                     $asignajefe->save();
                 }
-            }
-
-                //$st=Empleado::find($idem);
-                //$st-> fechaingreso=$fecha;
-                //$st-> idjefeinmediato=$idji;
-                //$st-> idstatus='2';
-                //$st-> update();
-            
+            }            
 
         } catch (Exception $e) 
         {
@@ -320,8 +293,6 @@ class RHNombramientoEmpleado extends Controller
 
                 $asignajefe = new Asignajefe;
 
-
-
             foreach ($miArray as $key => $value) {
                 $notifica = $value['1'];
 
@@ -339,8 +310,6 @@ class RHNombramientoEmpleado extends Controller
                 $asignajefe->notifica = $notifica;
                 $asignajefe->save();
             }
-
-
 
                 if ($miArray > 0) 
                 {

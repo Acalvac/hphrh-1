@@ -30,7 +30,7 @@ class ECajaChica extends Controller
     }
 
     public function add(){
-        $proyectos = DB::table('proyecto as pca')
+        $proyectos = DB::table('proyecto as pca') // todos los proyectos
             ->select('pca.idproyecto','pca.nombreproyecto as proyecto')
             ->get();
 
@@ -137,7 +137,6 @@ class ECajaChica extends Controller
             else{
                 return response()->json(array('error'=>'la fecha inicio no puede ser mayor que la fecha final'),404);
             }
-
             DB::commit();
         }catch (\Exception $e) 
         {

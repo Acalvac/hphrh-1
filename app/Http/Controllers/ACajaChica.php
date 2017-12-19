@@ -147,7 +147,7 @@ class ACajaChica extends Controller
         return response()->json($encabezado);
     }
 
-    // metodos de una nueva liquidación
+    // metodos de una nueva liquidación ..
     public function liquidar($id){
         $proyecto = DB::table('cajachica as caj')
             ->join('gastoencabezado as gen','caj.idcajachica','=','gen.idcajachica')
